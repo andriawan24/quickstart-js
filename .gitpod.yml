@@ -6,7 +6,7 @@ tasks:
   - init: |
       clear
       if [ -z "$FIREBASE_TOKEN" ]; then
-        bugStatus="$(curl https://api.github.com/repos/gitpod-io/gitpod/issues/1528 | grep -o "state.*")"
+        bugStatus="$(curl https://api.github.com/repos/gitpod-io/gitpod/issues/1528 2>/dev/null | grep -o "state.*")"
         case "$bugStatus" in
           "state\": \"open\",")
             printf '\033[31m\033[1mWARNING:\033[0m %s\n' "Firebase on gitpod is affected by a bug https://github.com/gitpod-io/gitpod/issues/1528, please ignore the blank preview and open the generated website in a browser"
