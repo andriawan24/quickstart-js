@@ -1,4 +1,5 @@
-tasks:
-  - init: npm install
 image:
   file: .gitpod.Dockerfile
+tasks:
+  # '--no-localhost' is required due to the https://github.com/gitpod-io/gitpod/issues/1528
+  - init: [ -z "$FIREBASE_TOKEN" ] && firebase login --no-localhost
