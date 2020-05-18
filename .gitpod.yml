@@ -18,7 +18,7 @@ tasks:
             printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "The export of FIREBASE_TOKEN variable can be done account-wide and specified per repository on https://gitpod.io/settings/"
           ;;
           "state\": \"closed\",")
-            printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "Variable 'FIREBASE_TOKEN' is not set, without the token set you need to parse '--token YOUR_TOKEN' to each firebase command.
+            printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "Variable 'FIREBASE_TOKEN' is not set, without the token set you need to parse '--token YOUR_TOKEN' to each firebase command."
             printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "Please run 'firebase login' and export the token, you can also set the token permanently in https://gitpod.io/settings"
             printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "More info on https://www.gitpod.io/docs/frameworks/firebase"
           ;;
