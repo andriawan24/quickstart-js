@@ -1,5 +1,29 @@
 image:
   file: .gitpod.Dockerfile
 tasks:
+  # Configure the firebase token
   # '--no-localhost' is required due to the https://github.com/gitpod-io/gitpod/issues/1528
-  - init: [ -z "$FIREBASE_TOKEN" ] && firebase login --no-localhost
+  - init: |
+      clear
+      if [ -z "$FIREBASE_TOKEN" ]; then
+        bugStatus="$(curl https://api.github.com/repos/gitpod-io/gitpod/issues/1528 | grep -o "state.*")"
+        case "$bugStatus" in
+          "state\": \"open\",")
+            printf '\033[31m\033[1mWARNING:\033[0m %s\n' "Firebase on gitpod is affected by a bug https://github.com/gitpod-io/gitpod/issues/1528, please ignore the blank preview and open the generated website in a browser"
+            printf '\n%s\n' "Press any key to continue.."
+            read -r something
+            # HOTFIX: '-no-localhost' is a hotfix for bug https://github.com/gitpod-io/gitpod/issues/1528
+            firebase login --no-localhost
+            printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "You can now export variable FIREBASE_TOKEN to avoid parsing 'firebase subcommand --token YOUR_TOKEN' for each usage of firebase"
+            printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "The export of FIREBASE_TOKEN variable can be done account-wide and specified per repository on https://gitpod.io/settings/"
+          ;;
+          "state\": \"closed\",")
+            printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "Variable 'FIREBASE_TOKEN' is not set, without the token set you need to parse '--token YOUR_TOKEN' to each firebase command.
+            printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "Please run 'firebase login' and export the token, you can also set the token permanently in https://gitpod.io/settings"
+            printf '\033[0;34m\033[1mINFO:\033[0m %s\n' "More info on https://www.gitpod.io/docs/frameworks/firebase"
+          ;;
+          *) printf 'BUG: %s\n' "Unknown state of bug https://api.github.com/repos/gitpod-io/gitpod/issues/1528 has been detected"
+        esac
+      elif [ -n "$FIREBASE_TOKEN" ]; then
+        true # Nothing else to do here
+      fi
